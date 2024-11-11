@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background: #228B22;
+    color: #fff;
+    padding: 20px 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+section {
+    padding: 20px;
+    margin: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #f4f4f4;
+}
+
+form label {
+    display: block;
+    margin: 5px 0 2px;
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
