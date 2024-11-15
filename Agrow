@@ -14,7 +14,7 @@
             <ul>
                 <li><a href="#about"></a>About Us</li>
                 <li><a href="#services">Our Services</li>
-                <li><a href="#contact">Contact</li>
+                <li><a href="#Home">Home</li>
             </ul>
         
     </header> 
@@ -26,9 +26,9 @@
     <section id="services">
         <h2>Our Services</h2>
         <ul>
-            <li>Organic crop farming</li>
+            <li>farming lands </li>
             <li>Animal husbandry</li>
-            <li>Agricultural consultancy</li>
+             
         </ul>
     </section>
 
