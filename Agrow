@@ -12,11 +12,10 @@
     <header>
         <h1>Welcome to GreenField Agriculture</h1>
     
-            <ul><br>
-                <li><a href="#about"></a>About Us</li>
+            <ul><li><a href="#about"></a>About Us</li>
                 <li><a href="#services">Our Services</li>
                 <li><a href="#Home">Home</li>
-                <br></ul>
+                </ul>
         
     </header> 
     <section id="about">
