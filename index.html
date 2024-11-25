@@ -1,63 +1,69 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Agrow</title>
-        <link type="text/css" rel ="stylesheet" href="style.css">
-        </head>
-        <body>
-            <header>
-                <h1><center>Agriculture Matter Lending lands</center></h1>
-                </header>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrow</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;">Agriculture Matters: Lending Lands</h1>
+    </header>
 
-                <section>
-                    <h2><u>About Agrow</u></h2>
-        <p>Agrow is a platform that help farmers as well as common people to lend their lands for farming.It helps the farmers to choose their land for perfect farming</p>
-                </section>
-                <table>
-                    <tr>
-                        <td>
-                            <form autocomplete="off" onsubmit="onFormSubmit()">
-                                <div>
-                                    <label for="Typeoffarmingland">Type of Farming land</label>
-                                    <input type="text" name="Typeoffarmingland" id="Typeoffarmingland">
-                                </div>
-                                <div>
-                                    <label for="Area">Area</label>
-                                    <input type="text" name="Area" id="Area">
-                                    </div>
-                                <div>
-                                    <label for="Location">Location</label>
-                                    <input type="text" name="Location" id="Location">
-                                    </div>
-                        <div>
-                                        <label for="Contactno">Contact no</label>
-                                        <input type="number" name="Contactno" id="Contactno">
-                                    </div>
-                                    <div class="form_action--button"></div>
-                                    <div>
-                                        <input type="submit" value="Submit">
-                                        <input type="reset" value="Reset">
-                                    </div>
-                            </form>
-                            <td>
-                                <table class="list" id="storeList">
-                                    <thead>
-                                        <tr>
-                                            <th> Type of farming land</th>
-                                            <th> Area</th>
-                                            <th> Location</th>
-                                            <th> Contact no</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+    <section>
+        <h2><u>About Agrow</u></h2>
+        <p>Agrow is a platform that helps farmers and common people lend or lease lands for farming. It helps farmers select the perfect land for their agricultural needs.</p>
+    </section>
 
-                                    </tbody>
-                                </table>
-                            </td>
-                    </tr>
+    <table>
+        <tr>
+            <td>
+                <!-- Form Section -->
+                <form autocomplete="off" onsubmit="onFormSubmit(event)">
+                    <div>
+                        <label for="Typeoffarmingland">Type of Farming Land:</label>
+                        <input type="text" name="Typeoffarmingland" id="Typeoffarmingland" required>
+                    </div>
+                    <div>
+                        <label for="Area">Area:</label>
+                        <input type="text" name="Area" id="Area" required>
+                    </div>
+                    <div>
+                        <label for="Location">Location:</label>
+                        <input type="text" name="Location" id="Location" required>
+                    </div>
+                    <div>
+                        <label for="Contactno">Contact Number:</label>
+                        <input type="number" name="Contactno" id="Contactno" required>
+                    </div>
+                    <div class="form_action--button">
+                        <input type="submit" value="Submit">
+                        <input type="reset" value="Reset">
+                    </div>
+                </form>
+            </td>
+
+            <!-- Table Section -->
+            <td>
+                <table class="list" id="storeList" border="1" style="width: 100%; margin-left: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Type of Farming Land</th>
+                            <th>Area</th>
+                            <th>Location</th>
+                            <th>Contact Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic rows will be inserted here by JavaScript -->
+                    </tbody>
                 </table>
-                <script type="text/javascript" src="./script.js"></script>
-        </body>  
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript" src="./script.js"></script>
+</body>
 </html>
