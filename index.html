@@ -5,40 +5,59 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Agrow</title>
         <link rel="stylesheet" href="style.css">
-        <script defer src="script.js"></script>
         </head>
-    
-<body>
-    <header>
-        <h1>Agriculture Matter Lending lands</h1>
-    
-            <ul>
-                <li><a href="#about"></a>About Us</li>
-                <li><a href="#services">Services</li>
-                <li><a href="#Home">Home</li>
-            </ul>
-        
-    </header> 
-    <section id="about">
-        <h2>About Our Farm</h2>
-        <p>Agrow is a platform that help farmers as well as common people to lend their lands for farming</p>
-    </section>
+        <body>
+            <header>
+                <h1><center>Agriculture Matter Lending lands</center></h1>
+                </header>
 
-    <section id="services">
-        <h2>Land Detail</h2>
-        <ul>
-            <li>Organic farming Land</li>
-            <li>Diary farming </li>
-            <li>Agricultural land </li>
-        </ul>
-    </section>
+                <section>
+                    <h2><u>About Agrow</u></h2>
+        <p>Agrow is a platform that help farmers as well as common people to lend their lands for farming.It helps the farmers to choose their land for perfect farming</p>
+                </section>
+                <table>
+                    <tr>
+                        <td>
+                            <form autocomplete="off" onsubmit="onFormSubmit">
+                                <div>
+                                    <label for="Typeoffarmingland">Type of Farming land</label>
+                                    <input type="text" name="Typeoffarmingland" id="Typeoffarmingland"
+                                </div>
+                                <div>
+                                    <label for="Area">Area</label>
+                                    <input type="text" name="Area" id="Area"
+                                    </div>
+                                <div>
+                                    <label for="Location">Location</label>
+                                    <input type="text" name="Location" id="Location"
+                                    </div>
+                                    <div class="form_action--button">
+                                        <label for="Contactno">Contact no</label>
+                                        <input type="number" name="Contactno" id="Contactno"
+                                    </div>
+                                    <div>
+                                        <input type="submit" value="Submit">
+                                        <input type="reset" value="Reset">
+                                    </div>
+                            </form>
+                            <td>
+                                <table class="list" id="storeList">
+                                    <thead>
+                                        <tr>
+                                            <th> Type of farming land</th>
+                                            <th> Area</th>
+                                            <th> Location</th>
+                                            <th> Contact no</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-    <section id="Home">
-        <h2>Farmers Details</h2>
-        <form id="farmer-form">
-            <input type="text" id="farmer-name" placeholder="Name" required />
-            <input type="number" id="farmer-contact" placeholder="Contact" required />
-            <input type="text" id="farmer-address" placeholder="Address" />
-            <button type="submit">Submit</button>
-        </form>
-    </section>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </td>
+                    </tr>
+                </table>
+                <script type="text/javascript" src="./script.js"></script>
+        </body>  
+</html>

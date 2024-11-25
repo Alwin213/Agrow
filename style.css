@@ -1,52 +1,78 @@
 body {
+    background-image: url('photo1.jpeg');
+    background-image: url('photo2.jpg');
+    background-image: url('photo3.jpeg');
+    background-image: url('photo4.jpeg');
+
+
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
-header {
-    background: #228B22;
-    color: #fff;
-    padding: 20px 10px;
+table{
+    width: 80;
+    margin: 40px auto;
+    background: rgb(124,154,167);
+}
+table.list{
     text-align: center;
+    width:100%;
+}
+td{
+    border:1px solid rgb(204,200,200);
+    text-align:left;
+    padding: 8px 15px;
+
+}
+tr:nth-child(even), table.list thread> tr{
+    background: rgb(204,200,200);
+}
+input[type="text"],input[type="number"]{
+   width:91% ;
+   padding:12px 25px;
+   margin: 8px 0;
+   display:inline-block;
+   border:1px solid rgb(165,161,161);
+   border-radius:4px;
+
+
+}
+input[type="submit"],input[type="reset"]{
+    background: #eee;
+    padding:6px 12px;
+    margin: 15px 0 10px;
+    display:inline-block;
+    border:1px solid rgb(165,161,161);
+    border-radius:30px;
+    font-size:1rem;
+    cursor:pointer;
+    outline :none;
+ }
+input[type="submit"] :hover{
+    background-color: #4b99d8 ;
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
+input[type="rest"] :hover{
+    background-color: #4b99d8 ;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 15px;
-}
+button {
+input[type="submit"],input[type="reset"]{
+    background: #eee;
+    padding:6px 12px;
+    margin: 15px 0 10px;
+    display:inline-block;
+    border:1px solid rgb(165,161,161);
+    border-radius:30px;
+    font-size:1rem;
+    cursor:pointer;
+    outline :none;
+ }
+ button hoever{
 
-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
+    background: #4b99d8;
 
-section {
-    padding: 20px;
-    margin: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background: #f4f4f4;
-}
-
-form label {
-    display: block;
-    margin: 5px 0 2px;
-}
-
-form input, form textarea, form button {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
+ }
 }

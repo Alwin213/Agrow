@@ -1,48 +1,37 @@
-document.getElementById('addCrop').addEventListener('click', addCrop);
-
-function addCrop() {
-    const cropName = document.getElementById('cropName').value;
-    const quantity = document.getElementById('quantity').value;
-
-    if (cropName && quantity) {
-        const table = document.getElementById('cropTable').getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow();
-
-        // Insert cells for Crop Name and Quantity
-        const cropNameCell = newRow.insertCell(0);
-        cropNameCell.textContent = cropName;
-
-        const quantityCell = newRow.insertCell(1);
-        quantityCell.textContent = quantity;
-
-        // Create Actions cell with Edit and Delete buttons
-        const actionsCell = newRow.insertCell(2);
-        actionsCell.innerHTML = `
-            <button onclick="editCrop(this)">Edit</button>
-            <button onclick="deleteCrop(this)">Delete</button>
-        `;
-
-        // Clear input fields
-        document.getElementById('cropName').value = '';
-        document.getElementById('quantity').value = '';
-    } else {
-        alert('Please enter both crop name and quantity.');
+var selectedRow = NULL;
+function  onFormSubmit(){
+    event.preventDefault();
+    var formData = readFormData();
+    if(selectedRow ===null){
+      insertNewRecord(formData);
     }
+    else{
+
+    }
+
+}
+function readFormData(){
+    var formData = {};
+    formData["Type of farming land"] = document.getElementById("Type of farming land").value;
+    formData["Area"] = document.getElementById("Area").value;
+    formData["Location"] = document.getElementById("Location").value;
+    formData["Contactno"] = document.getElementById("Contactno").value;
+    return formData;
 }
 
-function deleteCrop(button) {
-    const row = button.parentElement.parentElement;
-    row.remove();
+function insertNewRecord(data){
+var table = document.getElementById("storeList").getElementsByTagName('tbody')[0];
+var newRow = table.insertRow(table.length);
+var cell1= newRow.insertCell(0);
+    cell1.innerHTML=data.Typeoffarmingland;;
+var cell2= newRow.insertCell(1);
+    cell2.innerHTML=data.Area;
+var cell3= newRow.insertCell(2);
+    cell3.innerHTML=data.Location;
+var cell4= newRow.insertCell(3);
+cell4.innerHTML=data.Contactno;
+var cell5= newRow.insertCell(4);
+cell5.innerHTML='<button>Edit</button> <button>Delete</button>'
 }
 
-function editCrop(button) {
-    const row = button.parentElement.parentElement;
-    const cropName = row.cells[0].textContent;
-    const quantity = row.cells[1].textContent;
 
-    document.getElementById('cropName').value = cropName;
-    document.getElementById('quantity').value = quantity;
-
-    // Remove the current row to update with new data
-    row.remove();
-}
