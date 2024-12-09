@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agrow</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link type ="text/css" rel="stylesheet" href="style.css"
+    <link type="text/css" rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -17,23 +17,23 @@
         <p><b>Agrow is a platform that helps farmers and common people lend or lease lands for farming. It helps farmers select the perfect land for their agricultural needs.</b></p>
     </section>
 
-
     <!-- Form for adding/editing records -->
     <form id="land-form">
-        <label for="Typeoffarmingland"><b><p style="color: blue;">Type of Farming Land</p></b></label>
-        <input type="text" id="Typeoffarmingland" name="Typeoffarmingland" required><br>
-        <br>
+        <input type="hidden" id="record-id" name="id"> <!-- Hidden field for record ID -->
+        <label for="Typeoffarmingland"><b><p style="color: red;">Type of Farming Land</p></b></label>
+        <input type="text" id="Typeoffarmingland" name="Typeoffarmingland" required><br><br>
+
         <label for="Area"><b><p style="color: red;">Area</p></b></label>
-        <input type="text" id="Area" name="Area" required><br>
-        <br>
-        <label for="Location"><b><p style="color: red;"> Location</p></b></label>
-        <input type="text" id="Location" name="Location" required><br>
-        <br>
-        <label for="Contactno"><b><p style="color: blue;">Contact Number</p></b></label>
-        <input type="number" id="Contactno" name="Contactno" required><br>
-        <br>
+        <input type="text" id="Area" name="Area" required><br><br>
+
+        <label for="Location"><b><p style="color: red;">Location</p></b></label>
+        <input type="text" id="Location" name="Location" required><br><br>
+
+        <label for="Contactno"><b><p style="color: red;">Contact Number</p></b></label>
+        <input type="number" id="Contactno" name="Contactno" required><br><br>
+
         <button type="submit" id="submit-button">Submit</button>
-        <button type="reset"  id="reset-button">Reset</button>
+        <button type="reset" id="reset-button">Reset</button>
     </form>
 
     <table id="land-table">
@@ -49,103 +49,6 @@
         <tbody></tbody>
     </table>
 
-    <script>
-        let selectedRow = null;
-
-        // Fetch and display all records
-        function getAllRecords() {
-            fetch('http://localhost:5500/land')
-                .then(response => response.json())
-                .then(data => {
-                    const tableBody = document.querySelector('#land-table tbody');
-                    tableBody.innerHTML = '';
-                    data.forEach(record => insertNewRecord(record));
-                });
-        }
-
-        // Insert a new record into the table
-        function insertNewRecord(record) {
-            const tableBody = document.querySelector('#land-table tbody');
-            const row = tableBody.insertRow();
-            row.insertCell(0).textContent = record.Typeoffarmingland;
-            row.insertCell(1).textContent = record.Area;
-            row.insertCell(2).textContent = record.Location;
-            row.insertCell(3).textContent = record.Contactnumber;
-            const actionsCell = row.insertCell(4);
-            actionsCell.innerHTML = `<button onclick="onEdit(this)">Edit</button> <button onclick="onDelete(${record.id})">Delete</button>`;
-        }
-
-        // Edit an existing record
-        function onEdit(button) {
-            selectedRow = button.closest('tr');
-            document.getElementById('Typeoffarmingland').value = selectedRow.cells[0].textContent;
-            document.getElementById('Area').value = selectedRow.cells[1].textContent;
-            document.getElementById('Location').value = selectedRow.cells[2].textContent;
-            document.getElementById('Contactno').value = selectedRow.cells[3].textContent;
-            const id = selectedRow.cells[4].querySelector('button').getAttribute('data-id');
-            document.getElementById('submit-button').onclick = function() {
-                const formData = readFormData();
-                updateRecord(id, formData);
-            };
-        }
-
-        // Read form data
-        function readFormData() {
-            return {
-                Typeoffarmingland: document.getElementById('Typeoffarmingland').value,
-                Area: document.getElementById('Area').value,
-                Location: document.getElementById('Location').value,
-                Contactnumber: document.getElementById('Contactno').value,
-            };
-        }
-
-        // Update an existing record
-        function updateRecord(id, formData) {
-            fetch(`http://localhost:5500/update/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Record updated successfully');
-                getAllRecords();
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // Delete a record
-        function onDelete(id) {
-            fetch(`http://localhost:5500/delete/${id}`, {
-                method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Record deleted successfully');
-                getAllRecords();
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // Add a new record
-        document.getElementById('land-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = readFormData();
-            fetch('http://localhost:5500/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Record added successfully');
-                getAllRecords();
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
-        // Fetch all records when the page loads
-        window.onload = getAllRecords;
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
