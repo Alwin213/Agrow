@@ -1,24 +1,26 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql2');  // Use mysql2 instead of mysql
+const cors = require('cors');  // Make sure CORS is installed and configured
 const app = express();
 const PORT = 5500;
 
 // Middleware to parse incoming JSON data
 app.use(express.json());
+app.use(cors()); // Enable CORS
 
-// MySQL Connection Setup
+// MySQL Connection Setup (with mysql2)
 const db = mysql.createConnection({
   host: '127.0.0.1',
-  port: '3307',  // Adjust the port to your MySQL Workbench setup
+  port: '3307',  // Make sure this matches your MySQL setup
   user: 'root',  // Your MySQL username
   password: 'root',  // Your MySQL password
-  database: 'agrowdb'  // Your database name
+  database: 'agrowdb',  // Your database name
 });
 
-// Connect to MySQL
+// Connect to MySQL using mysql2
 db.connect((err) => {
   if (err) {
-    console.error('Database connection failed:', err.stack);
+    console.error('Error connecting to the database: ', err.stack);
     return;
   }
   console.log('Connected to MySQL database');
@@ -41,13 +43,14 @@ app.get('/land', (req, res) => {
 app.post('/add', (req, res) => {
   const { Typeoffarmingland, Area, Location, Contactnumber } = req.body;
   console.log(req.body);
+  
   // Validate that all fields are provided
   if (!Typeoffarmingland || !Area || !Location || !Contactnumber) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
   // SQL Query to Insert a New Record into the Land Table
-  const sql = 'INSERT INTO Land (Typeoffarmingland, Area, Location, Contactnumber) VALUES (?, ?, ?, ?)';
+  const sql = 'INSERT INTO land (Typeoffarmingland, Area, Location, Contactnumber) VALUES (?, ?, ?, ?)';
 
   db.query(sql, [Typeoffarmingland, Area, Location, Contactnumber], (err, result) => {
     if (err) {
@@ -69,7 +72,7 @@ app.put('/update/:id', (req, res) => {
   }
 
   // SQL Query to Update the Record
-  const sql = 'UPDATE Land SET Typeoffarmingland = ?, Area = ?, Location = ?, Contactnumber = ? WHERE id = ?';
+  const sql = 'UPDATE land SET Typeoffarmingland = ?, Area = ?, Location = ?, Contactnumber = ? WHERE id = ?';
 
   db.query(sql, [Typeoffarmingland, Area, Location, Contactnumber, id], (err, result) => {
     if (err) {
@@ -86,7 +89,7 @@ app.put('/update/:id', (req, res) => {
 // DELETE API to delete a record
 app.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
-  
+
   // First, check if the ID exists
   const checkSql = 'SELECT * FROM land WHERE id = ?';
   db.query(checkSql, [id], (err, result) => {
