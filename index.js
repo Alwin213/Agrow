@@ -9,7 +9,7 @@ const PORT = 5500;
 app.use(express.json());
 app.use(cors());
 
-// MySQL Connection Setup
+// MySQL Connection Settings
 const db = mysql.createConnection({
   host: '127.0.0.1',
   port: '3307',
