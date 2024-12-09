@@ -1,126 +1,120 @@
 let selectedRow = null;
 
-// Fetch data from backend and display in the table
+// Fetch data and display in the table
 window.onload = function() {
   fetchData();
 };
 
+// Fetch data from the server
 function fetchData() {
   fetch('http://localhost:5500/land')
     .then(response => response.json())
     .then(data => {
-      const tableBody = document.getElementById('storeList').getElementsByTagName('tbody')[0];
+      const tableBody = document.querySelector('#land-table tbody');
+      tableBody.innerHTML = "";
       data.forEach(item => {
         const row = tableBody.insertRow();
+        row.setAttribute('data-id', item.id);
         row.innerHTML = `
           <td>${item.Typeoffarmingland}</td>
           <td>${item.Area}</td>
           <td>${item.Location}</td>
           <td>${item.Contactnumber}</td>
           <td>
-            <button onclick="onEdit(this)">Edit</button> 
+            <button onclick="onEdit(this)">Edit</button>
             <button onclick="onDelete(this)">Delete</button>
           </td>
         `;
       });
     })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+    .catch(error => console.error('Error fetching data:', error));
 }
 
-// Handle form submission to add or update data
+// Handle form submission
 function onFormSubmit(event) {
   event.preventDefault();
-  var formData = readformData();
-  if (selectedRow === null) {
-    insertNewRecord(formData);
+  const formData = readFormData();
+  const recordId = document.getElementById('record-id').value;
+  if (recordId) {
+    updateRecord(recordId, formData);
   } else {
-    updateRecord(formData);
+    insertNewRecord(formData);
   }
+  resetForm();
 }
 
-function readformData() {
-  var formData = {};
-  formData["Typeoffarmingland"] = document.getElementById("Typeoffarmingland").value;
-  formData["Area"] = document.getElementById("Area").value;
-  formData["Location"] = document.getElementById("Location").value;
-  formData["Contactno"] = document.getElementById("Contactno").value;
-  return formData;
+document.getElementById('land-form').addEventListener('submit', onFormSubmit);
+
+// Read form data
+function readFormData() {
+  return {
+    Typeoffarmingland: document.getElementById('Typeoffarmingland').value,
+    Area: document.getElementById('Area').value,
+    Location: document.getElementById('Location').value,
+    Contactnumber: document.getElementById('Contactno').value,
+  };
 }
 
+// Insert a new record
 function insertNewRecord(data) {
-  const table = document.getElementById("storeList").getElementsByTagName('tbody')[0];
-  const newRow = table.insertRow(table.length);
-  newRow.innerHTML = `
-    <td>${data.Typeoffarmingland}</td>
-    <td>${data.Area}</td>
-    <td>${data.Location}</td>
-    <td>${data.Contactno}</td>
-    <td>
-      <button onclick="onEdit(this)">Edit</button>
-      <button onclick="onDelete(this)">Delete</button>
-    </td>
-  `;
-  // Optionally, send the data to the backend
   fetch('http://localhost:5500/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
-  .then(response => response.json())
-  .then(result => {
-    console.log('Record added:', result);
-  })
-  .catch(error => {
-    console.error('Error adding record:', error);
-  });
+    .then(response => response.json())
+    .then(result => {
+      console.log('Record added:', result);
+      fetchData();
+    })
+    .catch(error => console.error('Error adding record:', error));
 }
 
-function onEdit(td) {
-  selectedRow = td.parentElement.parentElement;
+// Edit record
+function onEdit(button) {
+  selectedRow = button.parentElement.parentElement;
+  document.getElementById('record-id').value = selectedRow.getAttribute('data-id');
   document.getElementById('Typeoffarmingland').value = selectedRow.cells[0].innerHTML;
   document.getElementById('Area').value = selectedRow.cells[1].innerHTML;
   document.getElementById('Location').value = selectedRow.cells[2].innerHTML;
   document.getElementById('Contactno').value = selectedRow.cells[3].innerHTML;
 }
 
-function updateRecord(formData) {
-  selectedRow.cells[0].innerHTML = formData.Typeoffarmingland;
-  selectedRow.cells[1].innerHTML = formData.Area;
-  selectedRow.cells[2].innerHTML = formData.Location;
-  selectedRow.cells[3].innerHTML = formData.Contactno;
-
-  // Optionally, send the updated data to the backend
-  const id = selectedRow.getAttribute('data-id');
+// Update record
+function updateRecord(id, formData) {
   fetch(`http://localhost:5500/update/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
+    body: JSON.stringify(formData),
   })
-  .then(response => response.json())
-  .then(result => {
-    console.log('Record updated:', result);
-  })
-  .catch(error => {
-    console.error('Error updating record:', error);
-  });
+    .then(response => response.json())
+    .then(result => {
+      console.log('Record updated:', result);
+      fetchData();
+    })
+    .catch(error => console.error('Error updating record:', error));
+
+  selectedRow = null;
 }
 
-function onDelete(td) {
-  const row = td.parentElement.parentElement;
+// Delete record
+function onDelete(button) {
+  const row = button.parentElement.parentElement;
   const id = row.getAttribute('data-id');
-
-  // Delete from the table
-  row.remove();
-
-  // Optionally, delete from the backend
-  fetch(`http://localhost:5500/delete/${id}`, { method: 'DELETE' })
+  fetch(`http://localhost:5500/delete/${id}`, {
+    method: 'DELETE',
+  })
     .then(response => response.json())
     .then(result => {
       console.log('Record deleted:', result);
+      fetchData();
     })
-    .catch(error => {
-      console.error('Error deleting record:', error);
-    });
+    .catch(error => console.error('Error deleting record:', error));
+}
+
+// Reset the form
+function resetForm() {
+  document.getElementById('land-form').reset();
+  document.getElementById('record-id').value = "";
+  selectedRow = null;
 }
