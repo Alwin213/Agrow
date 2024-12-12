@@ -1,17 +1,17 @@
 let selectedRow = null;
 
-// Fetch data and display in the table
+
 window.onload = function () {
   fetchData();
 };
 
-// Fetch data from the server
+
 function fetchData() {
   fetch('http://localhost:5500/land')
     .then(response => response.json())
     .then(data => {
       const tableBody = document.querySelector('#land-table tbody');
-      tableBody.innerHTML = "";  // Clear any existing rows before adding new ones
+      tableBody.innerHTML = "";  
       data.forEach(item => {
         const row = tableBody.insertRow();
         row.setAttribute('data-id', item.id);
@@ -30,7 +30,7 @@ function fetchData() {
     .catch(error => console.error('Error fetching data:', error));
 }
 
-// Handle form submission
+
 function onFormSubmit(event) {
   event.preventDefault();
   const formData = readFormData();
@@ -45,7 +45,7 @@ function onFormSubmit(event) {
 
 document.getElementById('land-form').addEventListener('submit', onFormSubmit);
 
-// Read form data
+
 function readFormData() {
   return {
     Typeoffarmingland: document.getElementById('Typeoffarmingland').value,
@@ -55,7 +55,7 @@ function readFormData() {
   };
 }
 
-// Insert a new record
+
 function insertNewRecord(data) {
   fetch('http://localhost:5500/add', {
     method: 'POST',
@@ -65,12 +65,11 @@ function insertNewRecord(data) {
     .then(response => response.json())
     .then(result => {
       console.log('Record added:', result);
-      fetchData();  // Refresh the data after adding a new record
+      fetchData();  
     })
     .catch(error => console.error('Error adding record:', error));
 }
 
-// Edit record
 function onEdit(button) {
   selectedRow = button.parentElement.parentElement;
   document.getElementById('record-id').value = selectedRow.getAttribute('data-id');
@@ -80,7 +79,7 @@ function onEdit(button) {
   document.getElementById('Contactnumber').value = selectedRow.cells[3].innerHTML || ''; // Corrected field name to Contactnumber
 }
 
-// Update record
+
 function updateRecord(id, formData) {
   fetch(`http://localhost:5500/update/${id}`, {
     method: 'PUT',
@@ -90,14 +89,14 @@ function updateRecord(id, formData) {
     .then(response => response.json())
     .then(result => {
       console.log('Record updated:', result);
-      fetchData();  // Refresh the table after updating the record
+      fetchData();  
     })
     .catch(error => console.error('Error updating record:', error));
 
   selectedRow = null;
 }
 
-// Delete record
+
 function onDelete(button) {
   const row = button.parentElement.parentElement;
   const id = row.getAttribute('data-id');
@@ -107,12 +106,12 @@ function onDelete(button) {
     .then(response => response.json())
     .then(result => {
       console.log('Record deleted:', result);
-      fetchData();  // Refresh the data after deleting a record
+      fetchData();  
     })
     .catch(error => console.error('Error deleting record:', error));
 }
 
-// Reset the form
+
 function resetForm() {
   document.getElementById('land-form').reset();
   document.getElementById('record-id').value = "";
