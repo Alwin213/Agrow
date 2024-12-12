@@ -1,93 +1,98 @@
 const express = require('express');
 const mysql = require('mysql2');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5500;
+const corsOptions = {
+  origin: 'http://127.0.0.1:5500',  // Allow only this origin
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'
+};
 
-// Middleware to parse incoming JSON data
-app.use(express.json());
-app.use(cors());
 
-// MySQL Connection Settings
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+
+// Database configuration for AgrowDB connection
 const db = mysql.createConnection({
-  host: '127.0.0.1',
-  port: '3307',
-  user: 'root',
-  password: 'root',
-  database: 'agrowdb',
+  host: '127.0.0.1', 
+  port: 3307,      // Ensure you're connecting to the correct host (localhost or 127.0.0.1)
+  user: 'root',             // The MySQL username, typically 'root', but adjust if you have a custom username
+  password: 'root9609!', // Replace with the correct MySQL password for the 'root' user
+  database: 'agrowdb',      // Ensure the database 'agrowdb' exists in your MySQL server
 });
 
+// Connect to the database
 db.connect((err) => {
   if (err) {
-    console.error('Error connecting to the database: ', err.stack);
-    return;
+    console.error('Database connection failed:', err.message);
+    return;  // Exit if the connection fails
+  } else {
+    console.log('Connected to the AgrowDB database');
   }
-  console.log('Connected to MySQL database');
 });
 
-// Fetch all records
+// Define routes and endpoints
+
+// GET all records
 app.get('/land', (req, res) => {
-  const sqlQuery = 'SELECT * FROM land';
-  db.query(sqlQuery, (err, results) => {
+  db.query('SELECT * FROM land', (err, results) => {
     if (err) {
-      res.status(500).json({ error: err.message });
-      return;
+      console.error('Database query failed:', err);
+      res.status(500).send({ error: 'Database query failed' });
+    } else {
+      res.status(200).json(results);
     }
-    res.json(results);
   });
 });
 
-// Add a new record
+// POST a new record
 app.post('/add', (req, res) => {
-  const { Typeoffarmingland, Area, Location, Contactnumber } = req.body;
-  if (!Typeoffarmingland || !Area || !Location || !Contactnumber) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-  const sql = 'INSERT INTO land (Typeoffarmingland, Area, Location, Contactnumber) VALUES (?, ?, ?, ?)';
-  db.query(sql, [Typeoffarmingland, Area, Location, Contactnumber], (err, result) => {
+  const { Typeoffarmingland, Area, Location, Contactno } = req.body;
+  const query = 'INSERT INTO land (Typeoffarmingland, Area, Location, Contactno) VALUES (?, ?, ?, ?)';
+  db.query(query, [Typeoffarmingland, Area, Location, Contactno], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error' });
+      console.error('Database insert failed:', err);
+      res.status(500).send({ error: 'Database insert failed' });
+    } else {
+      res.status(201).json({ id: results.insertId, message: 'Record added successfully' });
     }
-    res.json({ message: 'Record added successfully', id: result.insertId });
   });
 });
 
-// Update an existing record
+// PUT to update a record
 app.put('/update/:id', (req, res) => {
   const { id } = req.params;
-  const { Typeoffarmingland, Area, Location, Contactnumber } = req.body;
-  if (!Typeoffarmingland || !Area || !Location || !Contactnumber) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-  const sql = 'UPDATE land SET Typeoffarmingland = ?, Area = ?, Location = ?, Contactnumber = ? WHERE id = ?';
-  db.query(sql, [Typeoffarmingland, Area, Location, Contactnumber, id], (err, result) => {
+  const { Typeoffarmingland, Area, Location, Contactno } = req.body;
+  const query = 'UPDATE land SET Typeoffarmingland = ?, Area = ?, Location = ?, Contactno = ? WHERE id = ?';
+  db.query(query, [Typeoffarmingland, Area, Location, Contactno, id], (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error' });
+      console.error('Database update failed:', err);
+      res.status(500).send({ error: 'Database update failed' });
+    } else {
+      res.status(200).json({ message: 'Record updated successfully' });
     }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Record not found' });
-    }
-    res.json({ message: 'Record updated successfully' });
   });
 });
 
-// Delete a record
+// DELETE a record
 app.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
-  const sql = 'DELETE FROM land WHERE id = ?';
-  db.query(sql, [id], (err, result) => {
+  db.query('DELETE FROM land WHERE id = ?', [id], (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error' });
+      console.error('Database delete failed:', err);
+      res.status(500).send({ error: 'Database delete failed' });
+    } else {
+      res.status(200).json({ message: 'Record deleted successfully' });
     }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Record not found' });
-    }
-    res.json({ message: 'Record deleted successfully' });
   });
 });
 
 // Start the server
-app.listen(PORT, () => {
+const PORT = 5500;
+const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+module.exports = { app, db, server };
